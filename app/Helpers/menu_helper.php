@@ -18,4 +18,4 @@ function getSubMenu($menu_id, $role)
         ->where(['user_submenu.menu' => $menu_id, 'user_access.role_id' => $role])
         ->get()->getResultArray();
     return $submenu;
-}
+} 
