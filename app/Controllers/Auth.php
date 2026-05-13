@@ -103,4 +103,4 @@ class Auth extends BaseController
             return view('pages/commons/login');
         }
     }
-}
+} 
