@@ -4,7 +4,7 @@ namespace Tests\Support\Models;
 
 use CodeIgniter\Model;
 
-class ExampleModel extends Model
+class ExampleModel extends Model 
 {
     protected $table          = 'factories';
     protected $primaryKey     = 'id';
