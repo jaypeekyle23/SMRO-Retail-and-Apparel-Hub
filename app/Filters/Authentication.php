@@ -46,4 +46,4 @@ class Authentication implements FilterInterface
     {
         //
     }
-}
+} 
