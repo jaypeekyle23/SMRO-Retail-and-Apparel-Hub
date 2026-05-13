@@ -389,4 +389,4 @@ class $controllerName extends BaseController
             return false;
         }
     }
-}
+} 
