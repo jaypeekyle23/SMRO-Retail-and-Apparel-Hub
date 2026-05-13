@@ -8,7 +8,7 @@ use Tests\Support\Models\ExampleModel;
 /**
  * @internal
  */
-final class ExampleDatabaseTest extends CIUnitTestCase
+final class ExampleDatabaseTest extends CIUnitTestCase 
 {
     use DatabaseTestTrait;
 
