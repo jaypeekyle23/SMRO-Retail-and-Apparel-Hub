@@ -117,4 +117,4 @@ class Sales extends BaseController
         fclose($output);
         exit;
     }
-}
+} 
