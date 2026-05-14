@@ -66,13 +66,8 @@
 </style>
 
 <div class="page-header mb-4">
-<<<<<<< HEAD
     <h1 class="h3 mb-0 text-gray-800"><strong><?= esc($title); ?></strong></h1>
-    <p class="text-muted">Welcome to your Inventory Control Center.</p>
-=======
-  <h1 class="h3 mb-0 text-gray-800"><strong><?= esc($title); ?></strong></h1>
-  <p class="text-muted">Welcome to your inventory control center.</p>
->>>>>>> 8aa8a17 (complete UI revamping)
+    <p class="text-muted">Welcome to your inventory control center.</p>
 </div>
 
 <div class="row mb-4">
