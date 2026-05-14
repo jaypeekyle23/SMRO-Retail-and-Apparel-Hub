@@ -179,6 +179,18 @@
                 </a>
             </li>
 
+            <li class="sidebar-item <?= url_is('suppliers*') ? 'active' : ''; ?>">
+                <a class="sidebar-link" href="<?= base_url('suppliers'); ?>">
+                    <i class="align-middle" data-feather="truck"></i> <span class="align-middle">Suppliers</span>
+                </a>
+            </li>
+
+            <li class="sidebar-item <?= url_is('purchase-orders*') ? 'active' : ''; ?>">
+                <a class="sidebar-link" href="<?= base_url('purchase-orders'); ?>">
+                    <i class="align-middle" data-feather="shopping-bag"></i> <span class="align-middle">Purchase Orders</span>
+                </a>
+            </li>
+
             <li class="sidebar-header">
                 Sales
             </li>
