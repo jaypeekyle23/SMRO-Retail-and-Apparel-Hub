@@ -3,7 +3,7 @@
 
 <div class="page-header mb-4">
     <h1 class="h3 mb-0 text-gray-800"><strong><?= esc($title); ?></strong></h1>
-    <p class="text-muted">Welcome to your inventory control center.</p>
+    <p class="text-muted">Welcome to your Inventory Control Center.</p>
 </div>
 
 <div class="row mb-4">
