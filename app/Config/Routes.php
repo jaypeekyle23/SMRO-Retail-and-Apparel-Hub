@@ -70,3 +70,22 @@ $routes->get('sales/(:num)', 'Sales::show/$1');
 
 $routes->get('sales/export', 'Sales::export');
 $routes->get('inventory/export', 'Inventory::export');
+
+$routes->get('customers', 'Customers::index');
+$routes->get('customers/(:num)', 'Customers::show/$1');
+
+// Supplier Routes
+$routes->get('suppliers', 'Suppliers::index');
+$routes->get('suppliers/create', 'Suppliers::create');
+$routes->post('suppliers/store', 'Suppliers::store');
+$routes->get('suppliers/edit/(:num)', 'Suppliers::edit/$1');
+$routes->post('suppliers/update/(:num)', 'Suppliers::update/$1');
+$routes->get('suppliers/delete/(:num)', 'Suppliers::delete/$1');
+
+// Purchase Order Routes
+$routes->get('purchase-orders', 'PurchaseOrders::index');
+$routes->get('purchase-orders/create', 'PurchaseOrders::create');
+$routes->post('purchase-orders/store', 'PurchaseOrders::store');
+$routes->get('purchase-orders/(:num)', 'PurchaseOrders::show/$1');
+$routes->post('purchase-orders/receive/(:num)', 'PurchaseOrders::receive/$1');
+$routes->get('purchase-orders/cancel/(:num)', 'PurchaseOrders::cancel/$1');

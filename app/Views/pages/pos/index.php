@@ -61,22 +61,34 @@
                 <h6 class="m-0 font-weight-bold text-primary"><i class="bi bi-cart3 me-2"></i> Current Order</h6>
                 <button class="btn btn-sm btn-outline-danger" onclick="clearCart()">Clear</button>
             </div>
-            
+
             <div class="card-body p-0">
                 <ul class="list-group list-group-flush" id="cart-items">
                     <li class="list-group-item text-center text-muted py-4" id="empty-cart-msg">Cart is empty</li>
                 </ul>
             </div>
-            
+
             <div class="card-footer bg-light border-top-0 pt-3 pb-4">
                 <div class="d-flex justify-content-between font-weight-bold h5 mb-3 text-dark">
                     <span>Total:</span>
                     <span>₱<span id="cart-total">0.00</span></span>
                 </div>
-                
+
                 <form action="<?= base_url('pos/checkout') ?>" method="POST" id="checkout-form">
                     <?= csrf_field() ?>
                     <input type="hidden" name="cart_data" id="cart-data-input">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-uppercase text-muted">Customer Name</label>
+                        <input type="text" name="customer_name" class="form-control" placeholder="e.g. Juan Dela Cruz">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-uppercase text-muted">Phone Number</label>
+                        <input type="text" name="customer_phone" class="form-control" placeholder="e.g. 09123456789">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-uppercase text-muted">Email (optional)</label>
+                        <input type="text" name="customer_email" class="form-control" placeholder="e.g. juan@email.com">
+                    </div>
                     <button type="submit" class="btn btn-primary btn-lg w-100 shadow-sm" id="checkout-btn" disabled>
                         Complete Sale
                     </button>
@@ -91,7 +103,7 @@
 
     function addToCart(variantId, name, variantName, price) {
         price = parseFloat(price);
-        
+
         if (cart[variantId]) {
             cart[variantId].quantity++;
         } else {

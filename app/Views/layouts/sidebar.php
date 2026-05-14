@@ -1,12 +1,6 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
 
-/* ══════════════════════════════════════════════
-   THREAD — Sidebar Visual System
-   Design tokens mirrored from login.html
-   Structure/logic untouched; CSS only.
-══════════════════════════════════════════════ */
-
 :root {
   --sb-bg:          #141210;
   --sb-surface:     #181512;
@@ -24,7 +18,6 @@
   --ease:           cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ── Shell — ID selector beats any class override from app.css ── */
 #sidebar.sidebar,
 #sidebar {
   background: var(--sb-bg) !important;
@@ -36,10 +29,6 @@
   background: var(--sb-bg) !important;
 }
 
-/* ── Brand / Logo ──
-   The <i> tag contains "Thread" — styled directly as
-   Cormorant Garamond italic. No pseudo-content added.
-─────────────────────────────────────────────── */
 #sidebar .sidebar-brand {
   display: flex !important;
   flex-direction: column !important;
@@ -58,7 +47,6 @@
   width: 100% !important;
 }
 
-/* Wordmark — "Thread" in Cormorant Garamond italic */
 #sidebar .sidebar-brand .align-middle i {
   font-family: var(--font-cg) !important;
   font-style: italic !important;
@@ -71,12 +59,10 @@
   position: relative !important;
 }
 
-/* No ::before — avoids "ThrThread" duplication */
 #sidebar .sidebar-brand .align-middle i::before {
   content: none !important;
 }
 
-/* Gradient rule under wordmark — mirrors login.html .brand-rule */
 #sidebar .sidebar-brand .align-middle i::after {
   content: '' !important;
   display: block !important;
@@ -86,7 +72,6 @@
   margin-top: 6px !important;
 }
 
-/* ── Section labels ── */
 #sidebar .sidebar-header {
   font-size: 9.5px !important;
   font-weight: 700 !important;
@@ -98,7 +83,6 @@
   font-family: var(--font-b) !important;
 }
 
-/* ── Nav links ── */
 #sidebar .sidebar-item > .sidebar-link {
   display: flex !important;
   align-items: center !important;
@@ -128,7 +112,6 @@
   border-left-color: var(--accent) !important;
 }
 
-/* Icon treatment */
 #sidebar .sidebar-link svg {
   width: 14px !important;
   height: 14px !important;
@@ -144,13 +127,11 @@
   opacity: 1 !important;
 }
 
-/* Simplebar scrollbar */
 #sidebar .simplebar-scrollbar::before {
   background: rgba(255, 255, 255, 0.07) !important;
   border-radius: 2px !important;
 }
 
-/* ── Footer user block ── */
 #sidebar .sidebar-footer {
   border-top: 1px solid var(--sb-border) !important;
   background: var(--sb-bg) !important;
@@ -211,6 +192,12 @@
             <li class="sidebar-item <?= url_is('sales*') ? 'active' : ''; ?>">
                 <a class="sidebar-link" href="<?= base_url('sales'); ?>">
                     <i class="align-middle" data-feather="file-text"></i> <span class="align-middle">Sales History</span>
+                </a>
+            </li>
+
+            <li class="sidebar-item <?= url_is('customers*') ? 'active' : ''; ?>">
+                <a class="sidebar-link" href="<?= base_url('customers'); ?>">
+                    <i class="align-middle" data-feather="users"></i> <span class="align-middle">Customers</span>
                 </a>
             </li>
 
