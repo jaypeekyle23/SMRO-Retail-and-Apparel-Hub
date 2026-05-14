@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Controllers;
+
 use App\Models\ProductModel;
 use App\Models\ProductVariantModel;
 use App\Models\StockLogModel;
@@ -24,46 +26,47 @@ class Home extends BaseController
         $totalStock = $totalStockQuery['stock_quantity'] ?? 0;
 
         // 3. Get Low Stock Alerts
-        $lowStockItems = $variantModel->select('product_variants.*, products.name as product_name')
-                                      ->join('products', 'products.id = product_variants.product_id', 'left')
-                                      ->where('stock_quantity <=', 5)
-                                      ->orderBy('stock_quantity', 'ASC')
-                                      ->findAll();
+        $lowStockItems = $variantModel
+            ->select('product_variants.*, products.name as product_name')
+            ->join('products', 'products.id = product_variants.product_id', 'left')
+            ->where('stock_quantity <=', 5)
+            ->orderBy('stock_quantity', 'ASC')
+            ->findAll();
 
         // 4. Get Recent Activity (Last 5 stock movements)
-        $recentActivity = $logModel->select('stock_logs.*, products.name as product_name, product_variants.size, product_variants.color')
-                                   ->join('products', 'products.id = stock_logs.product_id', 'left')
-                                   ->join('product_variants', 'product_variants.id = stock_logs.variant_id', 'left')
-                                   ->orderBy('stock_logs.created_at', 'DESC')
-                                   ->limit(5)
-                                   ->findAll();
+        $recentActivity = $logModel
+            ->select('stock_logs.*, products.name as product_name, product_variants.size, product_variants.color')
+            ->join('products', 'products.id = stock_logs.product_id', 'left')
+            ->join('product_variants', 'product_variants.id = stock_logs.variant_id', 'left')
+            ->orderBy('stock_logs.created_at', 'DESC')
+            ->limit(5)
+            ->findAll();
 
-        // 5. Daily Sales for the last 7 days
-        $db = \Config\Database::connect();
-        $dailySales = $db->query("
-            SELECT DATE(created_at) as sale_date, SUM(total_amount) as total
-            FROM orders
-            WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
-            GROUP BY DATE(created_at)
-            ORDER BY sale_date ASC
-        ")->getResultArray();
+        // 5. Daily Sales for the last 7 days (Query Builder)
+        $sevenDaysAgo = date('Y-m-d', strtotime('-7 days'));
+
+        $dailySalesRaw = $orderModel
+            ->select('DATE(created_at) as sale_date, SUM(total_amount) as total')
+            ->where('DATE(created_at) >=', $sevenDaysAgo)
+            ->groupBy('DATE(created_at)')
+            ->orderBy('sale_date', 'ASC')
+            ->findAll();
 
         $salesLabels = [];
         $salesData   = [];
-        foreach ($dailySales as $row) {
+        foreach ($dailySalesRaw as $row) {
             $salesLabels[] = date('M d', strtotime($row['sale_date']));
             $salesData[]   = (float) $row['total'];
         }
 
-        // 6. Top 5 Selling Products
-        $topProducts = $db->query("
-            SELECT products.name, SUM(order_items.quantity) as total_sold
-            FROM order_items
-            JOIN products ON products.id = order_items.product_id
-            GROUP BY order_items.product_id
-            ORDER BY total_sold DESC
-            LIMIT 5
-        ")->getResultArray();
+        // 6. Top 5 Selling Products (Query Builder)
+        $topProducts = $orderItemModel
+            ->select('products.name, SUM(order_items.quantity) as total_sold')
+            ->join('products', 'products.id = order_items.product_id', 'inner')
+            ->groupBy('order_items.product_id')
+            ->orderBy('total_sold', 'DESC')
+            ->limit(5)
+            ->findAll();
 
         $topProductLabels = [];
         $topProductData   = [];

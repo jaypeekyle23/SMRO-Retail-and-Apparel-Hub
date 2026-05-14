@@ -9,8 +9,8 @@ class Sales extends BaseController
 {
     public function index()
     {
-        $orderModel = new OrderModel();
-        $db         = \Config\Database::connect();
+        $orderModel     = new OrderModel();
+        $orderItemModel = new OrderItemModel();
 
         $dateFrom = $this->request->getGet('date_from') ?? date('Y-m-01');
         $dateTo   = $this->request->getGet('date_to')   ?? date('Y-m-d');
@@ -26,22 +26,23 @@ class Sales extends BaseController
         }
 
         $orders       = $builder->orderBy('created_at', 'DESC')->paginate($perPage, 'default');
-        $totalRevenue = $orderModel->where('DATE(created_at) >=', $dateFrom)
-                                   ->where('DATE(created_at) <=', $dateTo)
-                                   ->selectSum('total_amount')
-                                   ->first()['total_amount'] ?? 0;
+        $totalRevenue = $orderModel
+            ->where('DATE(created_at) >=', $dateFrom)
+            ->where('DATE(created_at) <=', $dateTo)
+            ->selectSum('total_amount')
+            ->first()['total_amount'] ?? 0;
 
-        $topProducts = $db->query("
-            SELECT products.name, SUM(order_items.quantity) as total_sold, SUM(order_items.quantity * order_items.price) as revenue
-            FROM order_items
-            JOIN orders ON orders.id = order_items.order_id
-            JOIN products ON products.id = order_items.product_id
-            WHERE DATE(orders.created_at) >= '{$dateFrom}'
-            AND DATE(orders.created_at) <= '{$dateTo}'
-            GROUP BY order_items.product_id
-            ORDER BY total_sold DESC
-            LIMIT 5
-        ")->getResultArray();
+        // Top selling products using Query Builder
+        $topProducts = $orderItemModel
+            ->select('products.name, SUM(order_items.quantity) as total_sold, SUM(order_items.quantity * order_items.price) as revenue')
+            ->join('orders', 'orders.id = order_items.order_id', 'inner')
+            ->join('products', 'products.id = order_items.product_id', 'inner')
+            ->where('DATE(orders.created_at) >=', $dateFrom)
+            ->where('DATE(orders.created_at) <=', $dateTo)
+            ->groupBy('order_items.product_id')
+            ->orderBy('total_sold', 'DESC')
+            ->limit(5)
+            ->findAll();
 
         $data = array_merge($this->data ?? [], [
             'title'        => 'Sales Reports',
@@ -117,4 +118,4 @@ class Sales extends BaseController
         fclose($output);
         exit;
     }
-} 
+}
