@@ -47,8 +47,11 @@ $routes->group('dashboard', ['filter' => 'isLoggedIn'], static function ($routes
 // --------------------------------------------------------------------
 // RESTful API Routes (For External Systems)
 // --------------------------------------------------------------------
-$routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($routes) {
-    $routes->resource('products', ['controller' => 'ProductController']);
+$routes->group('api', ['namespace' => 'App\Controllers\Api', 'filter' => 'bearerToken'], static function ($routes) {
+    $routes->get('products',        'ProductController::index');
+    $routes->get('products/(:num)', 'ProductController::show/$1');
+    $routes->get('inventory',       'ProductController::inventory');
+    $routes->get('sales',           'ProductController::sales');
 });
 // --------------------------------------------------------------------
 // THREAD Core Modules
@@ -56,8 +59,8 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($
 $routes->get('products', 'Products::index');
 $routes->get('products/create', 'Products::create');
 $routes->post('products/store', 'Products::store');
-$routes->get('products/delete/(:num)', 'Products::delete/$1'); 
-$routes->get('products/edit/(:num)', 'Products::edit/$1'); 
+$routes->get('products/delete/(:num)', 'Products::delete/$1');
+$routes->get('products/edit/(:num)', 'Products::edit/$1');
 $routes->post('products/update/(:num)', 'Products::update/$1');
 // Inventory Routes
 $routes->get('inventory', 'Inventory::index');
@@ -67,13 +70,10 @@ $routes->get('pos', 'Pos::index');
 $routes->post('pos/checkout', 'Pos::checkout');
 $routes->get('sales', 'Sales::index');
 $routes->get('sales/(:num)', 'Sales::show/$1');
-
 $routes->get('sales/export', 'Sales::export');
 $routes->get('inventory/export', 'Inventory::export');
-
 $routes->get('customers', 'Customers::index');
 $routes->get('customers/(:num)', 'Customers::show/$1');
-
 // Supplier Routes
 $routes->get('suppliers', 'Suppliers::index');
 $routes->get('suppliers/create', 'Suppliers::create');
@@ -81,7 +81,6 @@ $routes->post('suppliers/store', 'Suppliers::store');
 $routes->get('suppliers/edit/(:num)', 'Suppliers::edit/$1');
 $routes->post('suppliers/update/(:num)', 'Suppliers::update/$1');
 $routes->get('suppliers/delete/(:num)', 'Suppliers::delete/$1');
-
 // Purchase Order Routes
 $routes->get('purchase-orders', 'PurchaseOrders::index');
 $routes->get('purchase-orders/create', 'PurchaseOrders::create');
