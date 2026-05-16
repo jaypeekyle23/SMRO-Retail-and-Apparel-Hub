@@ -88,3 +88,8 @@ $routes->post('purchase-orders/store', 'PurchaseOrders::store');
 $routes->get('purchase-orders/(:num)', 'PurchaseOrders::show/$1');
 $routes->post('purchase-orders/receive/(:num)', 'PurchaseOrders::receive/$1');
 $routes->get('purchase-orders/cancel/(:num)', 'PurchaseOrders::cancel/$1');
+
+// User Profile Routes
+$routes->get('profile', 'Profile::index');
+$routes->post('profile/update', 'Profile::update');
+$routes->post('profile/change-password', 'Profile::changePassword');

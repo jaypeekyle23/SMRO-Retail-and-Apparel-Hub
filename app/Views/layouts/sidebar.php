@@ -229,6 +229,11 @@
                 </a>
             </li>
 
+            <li class="sidebar-item <?= url_is('profile*') ? 'active' : ''; ?>">
+                <a class="sidebar-link" href="<?= base_url('profile'); ?>">
+                    <i class="align-middle" data-feather="user"></i> <span class="align-middle">My Profile</span>
+                </a>
+            </li>
 
         </ul>
     </div>
