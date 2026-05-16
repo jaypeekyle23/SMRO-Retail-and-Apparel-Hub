@@ -223,6 +223,13 @@
                 </a>
             </li>
 
+            <li class="sidebar-item <?= url_is('menu-management*') ? 'active' : ''; ?>">
+                <a class="sidebar-link" href="<?= base_url('menu-management'); ?>">
+                    <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Menu Management</span>
+                </a>
+            </li>
+
+
         </ul>
     </div>
 </nav>
