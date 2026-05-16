@@ -12,6 +12,8 @@ class Home extends BaseController
 {
     public function index()
     {
+        $this->cachePage(60); // Cache for 60 seconds
+
         $productModel   = new ProductModel();
         $variantModel   = new ProductVariantModel();
         $logModel       = new StockLogModel();

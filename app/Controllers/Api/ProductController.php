@@ -16,6 +16,8 @@ class ProductController extends ResourceController
     // GET /api/products
     public function index()
     {
+        $this->cachePage(120); // Cache for 2 minutes
+
         $productModel = new ProductModel();
         $variantModel = new ProductVariantModel();
 
@@ -41,6 +43,8 @@ class ProductController extends ResourceController
     // GET /api/products/{id}
     public function show($id = null)
     {
+        $this->cachePage(120); // Cache for 2 minutes
+
         $productModel = new ProductModel();
         $variantModel = new ProductVariantModel();
 
@@ -64,6 +68,8 @@ class ProductController extends ResourceController
     // GET /api/inventory
     public function inventory()
     {
+        $this->cachePage(120); // Cache for 2 minutes
+
         $logModel = new StockLogModel();
 
         $logs = $logModel
@@ -84,6 +90,8 @@ class ProductController extends ResourceController
     // GET /api/sales
     public function sales()
     {
+        $this->cachePage(120); // Cache for 2 minutes
+
         $orderModel     = new OrderModel();
         $orderItemModel = new OrderItemModel();
 
