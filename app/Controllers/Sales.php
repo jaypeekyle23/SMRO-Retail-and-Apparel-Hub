@@ -18,14 +18,19 @@ class Sales extends BaseController
         $perPage  = 10;
 
         $builder = $orderModel
-            ->where('DATE(created_at) >=', $dateFrom)
-            ->where('DATE(created_at) <=', $dateTo);
+            ->select('orders.*, customers.name as customer_name')
+            ->join('customers', 'customers.id = orders.customer_id', 'left')
+            ->where('DATE(orders.created_at) >=', $dateFrom)
+            ->where('DATE(orders.created_at) <=', $dateTo);
 
         if ($search) {
-            $builder->like('order_number', $search);
+            $builder->groupStart()
+                    ->like('order_number', $search)
+                    ->orLike('customers.name', $search)
+                    ->groupEnd();
         }
 
-        $orders       = $builder->orderBy('created_at', 'DESC')->paginate($perPage, 'default');
+        $orders       = $builder->orderBy('orders.created_at', 'DESC')->paginate($perPage, 'default');
         $totalRevenue = $orderModel
             ->where('DATE(created_at) >=', $dateFrom)
             ->where('DATE(created_at) <=', $dateTo)
@@ -63,7 +68,10 @@ class Sales extends BaseController
         $orderModel     = new OrderModel();
         $orderItemModel = new OrderItemModel();
 
-        $order = $orderModel->find($id);
+        $order = $orderModel
+            ->select('orders.*, customers.name as customer_name, customers.phone as customer_phone')
+            ->join('customers', 'customers.id = orders.customer_id', 'left')
+            ->find($id);
 
         if (!$order) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
@@ -93,9 +101,11 @@ class Sales extends BaseController
         $dateTo   = $this->request->getGet('date_to')   ?? date('Y-m-d');
 
         $orders = $orderModel
-            ->where('DATE(created_at) >=', $dateFrom)
-            ->where('DATE(created_at) <=', $dateTo)
-            ->orderBy('created_at', 'DESC')
+            ->select('orders.*, customers.name as customer_name')
+            ->join('customers', 'customers.id = orders.customer_id', 'left')
+            ->where('DATE(orders.created_at) >=', $dateFrom)
+            ->where('DATE(orders.created_at) <=', $dateTo)
+            ->orderBy('orders.created_at', 'DESC')
             ->findAll();
 
         $filename = 'sales_' . $dateFrom . '_to_' . $dateTo . '.csv';
@@ -105,11 +115,12 @@ class Sales extends BaseController
 
         $output = fopen('php://output', 'w');
 
-        fputcsv($output, ['Order Number', 'Total Amount', 'Date & Time']);
+        fputcsv($output, ['Order Number', 'Customer', 'Total Amount', 'Date & Time']);
 
         foreach ($orders as $order) {
             fputcsv($output, [
                 $order['order_number'],
+                $order['customer_name'] ?? 'Walk-in',
                 $order['total_amount'],
                 $order['created_at']
             ]);

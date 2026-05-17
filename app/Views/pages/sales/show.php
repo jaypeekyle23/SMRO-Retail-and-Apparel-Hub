@@ -21,28 +21,23 @@
 
   body, .content-wrapper, main { background: var(--bg) !important; font-family: 'DM Sans', sans-serif; }
 
-  /* ── Header ──────────────────────────────────── */
   h1 { font-family: 'Sora', sans-serif; font-size: 1.6rem; color: var(--txt); letter-spacing: -.02em; }
 
-  /* ── Buttons ─────────────────────────────────── */
   .btn-success   { background: var(--ok) !important; border-color: var(--ok) !important; font-family: 'Sora', sans-serif; font-size: .82rem; font-weight: 600; border-radius: 8px; padding: .52rem 1.15rem; color: #fff !important; }
   .btn-success:hover { background: #178a4e !important; }
   .btn-secondary { background: var(--surface) !important; border: 1px solid var(--border) !important; color: var(--txt-2) !important; font-family: 'Sora', sans-serif; font-size: .82rem; font-weight: 500; border-radius: 8px; padding: .52rem 1.15rem; }
   .btn-secondary:hover { background: var(--bg) !important; }
 
-  /* ── Summary card ────────────────────────────── */
   .summary-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow); padding: 1.5rem; margin-bottom: 1.5rem; }
   .summary-field p  { font-family: 'Sora', sans-serif; font-size: .68rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--txt-3); margin-bottom: .3rem; }
   .summary-field h5 { font-family: 'Sora', sans-serif; font-size: 1rem; font-weight: 700; color: var(--txt); margin: 0; }
   .summary-field h5.accent { color: var(--accent); font-size: 1.2rem; }
   .summary-divider { width: 1px; background: var(--border); align-self: stretch; margin: 0 1.5rem; }
 
-  /* ── Items card ──────────────────────────────── */
   .main-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow); overflow: hidden; }
   .main-card .card-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 1.5rem; }
   .main-card .card-header h5 { font-family: 'Sora', sans-serif; font-size: .88rem; font-weight: 700; color: var(--txt); margin: 0; }
 
-  /* ── Table ───────────────────────────────────── */
   .table { margin-bottom: 0; }
   .table thead th { font-family: 'Sora', sans-serif; font-size: .67rem; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--txt-3); background: var(--bg); border-bottom: 1px solid var(--border) !important; border-top: none; padding: .85rem 1rem; white-space: nowrap; }
   .table tbody td { border-bottom: 1px solid var(--border) !important; border-top: none; padding: .9rem 1rem; vertical-align: middle; font-size: .875rem; color: var(--txt); }
@@ -51,14 +46,11 @@
   .table tfoot .total-amount { color: var(--accent); font-size: 1rem; }
   .table-hover tbody tr:hover { background: #FBF7F4 !important; }
 
-  /* ── SKU badge ───────────────────────────────── */
   .sku-text { font-family: 'Sora', sans-serif; font-size: .75rem; font-weight: 600; color: var(--accent); }
   .row-num  { font-family: 'Sora', sans-serif; font-size: .75rem; color: var(--txt-3); font-weight: 600; }
 
-  /* ── Empty state ─────────────────────────────── */
   .empty-cell { padding: 3rem 1rem; text-align: center; color: var(--txt-3); font-size: .875rem; }
 
-  /* ── Print styles ────────────────────────────── */
   @media print {
     body * { visibility: hidden; }
     .container-fluid, .container-fluid * { visibility: visible; }
@@ -82,6 +74,11 @@
             <div class="summary-field">
                 <p>Order Number</p>
                 <h5><?= esc($order['order_number']) ?></h5>
+            </div>
+            <div class="summary-divider d-none d-md-block"></div>
+            <div class="summary-field">
+                <p>Customer</p>
+                <h5><?= esc($order['customer_name'] ?? 'Walk-in') ?></h5>
             </div>
             <div class="summary-divider d-none d-md-block"></div>
             <div class="summary-field">

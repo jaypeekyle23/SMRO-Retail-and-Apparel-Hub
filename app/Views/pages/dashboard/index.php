@@ -66,14 +66,18 @@
 </style>
 
 <div class="page-header mb-4">
-    <h1 class="h3 mb-0 text-gray-800"><strong><?= esc($title); ?></strong></h1>
-    <p class="text-muted">Welcome to your inventory control center.</p>
+  <h1 class="h3 mb-0 text-gray-800"><strong><?= esc($title); ?></strong></h1>
+  <p class="text-muted">Welcome to your inventory control center.</p>
 </div>
 
 <div class="row mb-4">
   <div class="col-md-6 col-lg-3 mb-3">
     <div class="stat-card h-100">
-      <div class="stat-icon primary"><i class="bi bi-box-seam"></i></div>
+      <div class="stat-icon primary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 8V21H3V8"/><path d="M23 3H1v5h22V3z"/><path d="M10 12h4"/>
+        </svg>
+      </div>
       <div class="stat-label">Total Products</div>
       <div class="stat-value"><?= esc($totalProducts) ?></div>
     </div>
@@ -81,7 +85,11 @@
 
   <div class="col-md-6 col-lg-3 mb-3">
     <div class="stat-card h-100">
-      <div class="stat-icon success"><i class="bi bi-stack"></i></div>
+      <div class="stat-icon success">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>
+        </svg>
+      </div>
       <div class="stat-label">Total Items in Stock</div>
       <div class="stat-value"><?= esc($totalStock) ?></div>
     </div>
@@ -116,7 +124,7 @@
   <div class="col-lg-6 mb-4">
     <div class="card border-0 shadow-sm h-100">
       <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
-        <h6 class="m-0 font-weight-bold text-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i> Low Stock Alerts</h6>
+        <h6 class="m-0 font-weight-bold text-danger"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:.4rem;vertical-align:-.1em"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Low Stock Alerts</h6>
       </div>
       <div class="card-body">
         <?php if (!empty($lowStockItems)): ?>
@@ -142,7 +150,7 @@
           </div>
         <?php else: ?>
           <div class="empty-state">
-            <i class="bi bi-check-circle text-success"></i>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1F9E5C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:.5rem"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
             <em>All inventory levels look healthy!</em>
           </div>
         <?php endif; ?>
@@ -153,7 +161,7 @@
   <div class="col-lg-6 mb-4">
     <div class="card border-0 shadow-sm h-100">
       <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
-        <h6 class="m-0 font-weight-bold text-primary"><i class="bi bi-clock-history me-2"></i> Recent Activity</h6>
+        <h6 class="m-0 font-weight-bold text-primary"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:.4rem;vertical-align:-.1em"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Recent Activity</h6>
       </div>
       <div class="card-body">
         <?php if (!empty($recentActivity)): ?>
@@ -221,7 +229,7 @@
             datasets: [{
                 label: 'Units Sold',
                 data: <?= $topProductData ?>,
-                backgroundColor: ['#C96A2E','#E8A87C','#D4865A','#B85A24','#F0C4A0'],
+                backgroundColor: ['#C96A2E','#2471A3','#1F9E5C','#B45309','#7D3C98'],
                 borderRadius: 6,
             }]
         },

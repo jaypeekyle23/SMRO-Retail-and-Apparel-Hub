@@ -17,68 +17,55 @@
     --ok-bg:     #E8F8EF;
     --warn:      #B45309;
     --warn-bg:   #FEF3C7;
-    --danger:    #C0392B;
-    --danger-bg: #FDECEA;
     --r:         12px;
     --shadow:    0 2px 12px rgba(0,0,0,.06);
   }
 
   body, .content-wrapper, main { background: var(--bg) !important; font-family: 'DM Sans', sans-serif; }
 
-  /* ── Page header ─────────────────────────────── */
   .page-header h1 { font-family: 'Sora', sans-serif; font-size: 1.6rem; color: var(--txt); letter-spacing: -.02em; }
   .page-header p  { color: var(--txt-2); font-size: .875rem; margin: 0; }
 
-  /* ── Buttons ─────────────────────────────────── */
   .btn-primary  { background: var(--accent) !important; border-color: var(--accent) !important; font-family: 'Sora', sans-serif; font-size: .82rem; font-weight: 600; border-radius: 8px; padding: .52rem 1.15rem; color: #fff !important; }
   .btn-primary:hover { background: #b35a23 !important; }
   .btn-success  { background: var(--ok) !important; border-color: var(--ok) !important; font-family: 'Sora', sans-serif; font-size: .82rem; font-weight: 600; border-radius: 8px; padding: .52rem 1.15rem; color: #fff !important; }
   .btn-success:hover { background: #178a4e !important; }
   .btn-sm.btn-primary { padding: .3rem .85rem; font-size: .78rem; border-radius: 6px; }
 
-  /* ── Filter card ─────────────────────────────── */
   .filter-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; }
   .filter-card .form-label { font-family: 'Sora', sans-serif; font-size: .75rem; font-weight: 600; color: var(--txt-2); margin-bottom: .35rem; }
   .filter-card .form-control { border: 1px solid var(--border); border-radius: 8px; background: var(--bg); font-size: .875rem; color: var(--txt); padding: .52rem .85rem; transition: border-color .15s, box-shadow .15s; }
   .filter-card .form-control:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(201,106,46,.12); background: var(--surface); outline: none; }
 
-  /* ── Stat cards ──────────────────────────────── */
-  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow); padding: 1.25rem 1.5rem; }
+  .stat-card  { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow); padding: 1.25rem 1.5rem; }
   .stat-label { font-family: 'Sora', sans-serif; font-size: .68rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--txt-3); margin-bottom: .45rem; }
   .stat-value { font-family: 'Sora', sans-serif; font-weight: 700; color: var(--txt); line-height: 1.1; }
-  .stat-value.large { font-size: 2rem; }
+  .stat-value.large  { font-size: 2rem; }
   .stat-value.medium { font-size: 1.15rem; }
-  .stat-icon { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 1rem; margin-bottom: .75rem; }
+  .stat-icon { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; margin-bottom: .75rem; }
   .stat-icon.primary { background: var(--accent-bg); color: var(--accent); }
   .stat-icon.success { background: var(--ok-bg); color: var(--ok); }
   .stat-icon.warn    { background: var(--warn-bg); color: var(--warn); }
 
-  /* ── Main card ───────────────────────────────── */
   .main-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow); overflow: hidden; }
   .main-card .card-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 1.5rem; }
   .main-card .card-header h4 { font-family: 'Sora', sans-serif; font-size: .88rem; font-weight: 700; color: var(--txt); margin: 0; }
   .card-footer { background: var(--surface) !important; border-top: 1px solid var(--border) !important; padding: .85rem 1.5rem !important; }
 
-  /* ── Tables ──────────────────────────────────── */
   .table { margin-bottom: 0; }
   .table thead th { font-family: 'Sora', sans-serif; font-size: .67rem; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--txt-3); background: var(--bg); border-bottom: 1px solid var(--border) !important; border-top: none; padding: .85rem 1rem; white-space: nowrap; }
   .table tbody td { border-bottom: 1px solid var(--border) !important; border-top: none; padding: .9rem 1rem; vertical-align: middle; font-size: .875rem; color: var(--txt); }
   .table-hover tbody tr:hover { background: #FBF7F4 !important; }
   .table tbody tr:last-child td { border-bottom: none !important; }
 
-  /* ── Order number ────────────────────────────── */
   td.order-num { font-family: 'Sora', sans-serif; font-size: .78rem; font-weight: 700; color: var(--accent); }
+  .empty-cell  { padding: 3rem 1rem; text-align: center; color: var(--txt-3); font-size: .875rem; }
 
-  /* ── Empty state ─────────────────────────────── */
-  .empty-cell { padding: 3rem 1rem; text-align: center; color: var(--txt-3); font-size: .875rem; }
-
-  /* ── Pagination ──────────────────────────────── */
   .pagination .page-link { border-color: var(--border); color: var(--txt-2); font-size: .8rem; border-radius: 6px !important; margin: 0 2px; }
   .pagination .page-item.active .page-link { background: var(--accent); border-color: var(--accent); color: #fff; }
   .pagination .page-link:hover { background: var(--accent-bg); color: var(--accent); }
 </style>
 
-<!-- Page Header -->
 <div class="page-header mb-4">
     <h1 class="h3 mb-0"><strong><?= esc($title) ?></strong></h1>
     <p class="text-muted">Monitor transactions, revenue, and top-performing products.</p>
@@ -98,8 +85,8 @@
                 <input type="date" name="date_to" class="form-control" value="<?= esc($dateTo) ?>">
             </div>
             <div class="col-md-4">
-                <label class="form-label fw-bold">Search Order ID</label>
-                <input type="text" name="search" class="form-control" placeholder="Search order number..." value="<?= esc($search) ?>">
+                <label class="form-label fw-bold">Search Order ID or Customer</label>
+                <input type="text" name="search" class="form-control" placeholder="Search order number or customer name..." value="<?= esc($search) ?>">
             </div>
             <div class="col-md-2">
                 <button type="submit" class="btn btn-primary w-100">Filter</button>
@@ -112,21 +99,27 @@
     <div class="row mb-4">
         <div class="col-md-4 mb-3">
             <div class="stat-card h-100">
-                <div class="stat-icon primary"><i class="bi bi-receipt"></i></div>
+                <div class="stat-icon primary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16l4-2 4 2 4-2 4 2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+                </div>
                 <div class="stat-label">Total Orders</div>
                 <div class="stat-value large"><?= count($orders) ?></div>
             </div>
         </div>
         <div class="col-md-4 mb-3">
             <div class="stat-card h-100">
-                <div class="stat-icon success"><i class="bi bi-cash-stack"></i></div>
+                <div class="stat-icon success">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><circle cx="12" cy="14" r="2"/></svg>
+                </div>
                 <div class="stat-label">Total Revenue</div>
                 <div class="stat-value large">₱<?= number_format($totalRevenue, 2) ?></div>
             </div>
         </div>
         <div class="col-md-4 mb-3">
             <div class="stat-card h-100">
-                <div class="stat-icon warn"><i class="bi bi-calendar-range"></i></div>
+                <div class="stat-icon warn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/></svg>
+                </div>
                 <div class="stat-label">Period</div>
                 <div class="stat-value medium"><?= date('M d, Y', strtotime($dateFrom)) ?> — <?= date('M d, Y', strtotime($dateTo)) ?></div>
             </div>
@@ -145,6 +138,7 @@
                         <thead>
                             <tr>
                                 <th>Order ID</th>
+                                <th>Customer</th>
                                 <th>Total Amount</th>
                                 <th>Date & Time</th>
                                 <th>Action</th>
@@ -155,6 +149,7 @@
                                 <?php foreach ($orders as $order): ?>
                                     <tr>
                                         <td class="order-num"><?= esc($order['order_number']) ?></td>
+                                        <td><?= esc($order['customer_name'] ?? 'Walk-in') ?></td>
                                         <td style="font-family:'Sora',sans-serif;font-weight:600">₱<?= number_format($order['total_amount'], 2) ?></td>
                                         <td style="color:var(--txt-3);font-size:.8rem;white-space:nowrap"><?= date('M d, Y h:i A', strtotime($order['created_at'])) ?></td>
                                         <td>
@@ -163,7 +158,7 @@
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>
-                                <tr><td colspan="4" class="empty-cell">No sales found for this period.</td></tr>
+                                <tr><td colspan="5" class="empty-cell">No sales found for this period.</td></tr>
                             <?php endif; ?>
                         </tbody>
                     </table>
