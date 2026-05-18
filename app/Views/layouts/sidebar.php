@@ -213,6 +213,12 @@
                 </a>
             </li>
 
+            <li class="sidebar-item <?= url_is('returns*') ? 'active' : ''; ?>">
+                <a class="sidebar-link" href="<?= base_url('returns'); ?>">
+                    <i class="align-middle" data-feather="rotate-ccw"></i> <span class="align-middle">Returns</span>
+                </a>
+            </li>
+
             <li class="sidebar-header">
                 System
             </li>

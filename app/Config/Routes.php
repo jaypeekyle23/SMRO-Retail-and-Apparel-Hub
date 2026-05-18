@@ -93,3 +93,10 @@ $routes->get('purchase-orders/cancel/(:num)', 'PurchaseOrders::cancel/$1');
 $routes->get('profile', 'Profile::index');
 $routes->post('profile/update', 'Profile::update');
 $routes->post('profile/change-password', 'Profile::changePassword');
+
+// Returns Routes
+$routes->get('returns', 'Returns::index');
+$routes->get('returns/create/(:num)', 'Returns::create/$1');
+$routes->post('returns/store', 'Returns::store');
+$routes->post('returns/approve/(:num)', 'Returns::approve/$1');
+$routes->post('returns/reject/(:num)', 'Returns::reject/$1');

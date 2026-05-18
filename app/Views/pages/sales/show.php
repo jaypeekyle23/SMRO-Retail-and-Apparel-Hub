@@ -25,6 +25,8 @@
 
   .btn-success   { background: var(--ok) !important; border-color: var(--ok) !important; font-family: 'Sora', sans-serif; font-size: .82rem; font-weight: 600; border-radius: 8px; padding: .52rem 1.15rem; color: #fff !important; }
   .btn-success:hover { background: #178a4e !important; }
+  .btn-primary   { background: var(--accent) !important; border-color: var(--accent) !important; font-family: 'Sora', sans-serif; font-size: .82rem; font-weight: 600; border-radius: 8px; padding: .52rem 1.15rem; color: #fff !important; }
+  .btn-primary:hover { background: #b35a23 !important; }
   .btn-secondary { background: var(--surface) !important; border: 1px solid var(--border) !important; color: var(--txt-2) !important; font-family: 'Sora', sans-serif; font-size: .82rem; font-weight: 500; border-radius: 8px; padding: .52rem 1.15rem; }
   .btn-secondary:hover { background: var(--bg) !important; }
 
@@ -48,7 +50,6 @@
 
   .sku-text { font-family: 'Sora', sans-serif; font-size: .75rem; font-weight: 600; color: var(--accent); }
   .row-num  { font-family: 'Sora', sans-serif; font-size: .75rem; color: var(--txt-3); font-weight: 600; }
-
   .empty-cell { padding: 3rem 1rem; text-align: center; color: var(--txt-3); font-size: .875rem; }
 
   @media print {
@@ -64,6 +65,7 @@
         <h1 class="h3"><strong>Order Detail</strong></h1>
         <div class="d-flex gap-2">
             <button onclick="window.print()" class="btn btn-success">🖨 Print Receipt</button>
+            <a href="<?= base_url('returns/create/' . $order['id']) ?>" class="btn btn-primary">↩ Create Return</a>
             <a href="<?= base_url('sales') ?>" class="btn btn-secondary">← Back to Sales</a>
         </div>
     </div>
