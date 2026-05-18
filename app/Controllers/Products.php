@@ -278,3 +278,5 @@ class Products extends BaseController
         return redirect()->to('products')->with('success', 'Product updated successfully!');
     }
 }
+
+// commit
