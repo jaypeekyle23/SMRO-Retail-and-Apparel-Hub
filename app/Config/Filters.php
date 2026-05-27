@@ -46,25 +46,27 @@ class Filters extends BaseFilters
 
     public array $globals = [
         'before' => [
+            // Not logged in? Redirect to login — except for public routes and API
             'isLoggedIn' => ['except' => [
                 '/',
                 'register',
                 'login',
-                'api/*'
+                'api/*',
             ]],
 
+            // Logged in but not authorized? Redirect to blocked page
+            // Only except: public routes, dashboard (all roles), profile (all roles), and API
             'isGranted' => ['except' => [
-                '/', 'register', 'login', 'logout', 'blocked', 'dashboard',
-                'products', 'products/create', 'products/store', 'products/delete/*', 'products/edit/*', 'products/update/*',
-                'inventory',
-                'inventory/*',
-                'pos',
-                'pos/*',
-                'menu-management',
-                'menu-management/*',
-                'users',
-                'users/*',
-                'api/*'
+                '/',
+                'register',
+                'login',
+                'logout',
+                'blocked',
+                'dashboard',
+                'dashboard/*',
+                'profile',
+                'profile/*',
+                'api/*',
             ]],
         ],
         'after' => [
