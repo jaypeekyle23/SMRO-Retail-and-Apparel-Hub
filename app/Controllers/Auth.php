@@ -20,10 +20,8 @@ class Auth extends BaseController
             $inputEmail     = htmlspecialchars($this->request->getVar('inputEmail', FILTER_UNSAFE_RAW));
             $inputPassword  = htmlspecialchars($this->request->getVar('inputPassword', FILTER_UNSAFE_RAW));
             
-            // FIX: Instantiate the model locally to prevent lifecycle/initialization errors
             $applicationModel = new ApplicationModel();
             
-            // Note: The model uses 'username' as the parameter, but we pass the email from the login form
             $user           = $applicationModel->getUser(username: $inputEmail);
             
             if ($user) {
@@ -33,7 +31,7 @@ class Auth extends BaseController
                     session()->set([
                         'username'       => $user['username'],
                         'email'          => $user['email'] ?? $user['username'],
-                        'role'           => $user['role_id'], // Uses role_id to prevent redirect loops
+                        'role'           => $user['role_id'],
                         'role_id'        => $user['role_id'], 
                         'isLoggedIn'     => TRUE
                     ]);
@@ -51,7 +49,6 @@ class Auth extends BaseController
     
     public function logout()
     {
-        // Changed to the CI4 helper to avoid another potential property error
         session()->destroy(); 
         return redirect()->to(base_url('/'));
     }
@@ -87,20 +84,27 @@ class Auth extends BaseController
             $inputEmail    = htmlspecialchars($this->request->getVar('inputEmail', FILTER_UNSAFE_RAW));
             $inputPassword = htmlspecialchars($this->request->getVar('inputPassword', FILTER_UNSAFE_RAW));
             
-            $dataUser      = [
+            $dataUser = [
                 'inputFullname' => $inputFullname,
-                'inputUsername' => $inputEmail, 
-                'inputEmail'    => $inputEmail, 
+                'inputUsername' => $inputEmail,
+                'inputEmail'    => $inputEmail,
                 'inputPassword' => $inputPassword,
-                'inputRole'     => 4            
+                'inputRole'     => 4 // Standard User role for self-registered accounts
             ];
             
-            // FIX: Instantiate the model locally here as well
             $applicationModel = new ApplicationModel();
             $applicationModel->createUser($dataUser);
+
+            // Auto-create a linked customer record for the new User
+            $customerModel = new \App\Models\CustomerModel();
+            $customerModel->insert([
+                'name'  => $inputFullname,
+                'email' => $inputEmail,
+                'phone' => ''
+            ]);
             
             session()->setFlashdata('notif_success', '<b>Registration Successfully!</b> Please login with your account.');
             return view('pages/commons/login');
         }
     }
-} 
+}
