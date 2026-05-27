@@ -102,9 +102,11 @@
         <h1 class="h3 mb-0 text-gray-800"><strong><?= $title; ?></strong></h1>
         <p class="text-muted">Track the history of stock movements (In / Out).</p>
     </div>
+    <?php if (session()->get('role_id') <= 2): ?>
     <button type="button" class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#adjustStockModal">
         + Adjust Stock
     </button>
+    <?php endif; ?>
 </div>
 
 <?php if(session()->getFlashdata('success')): ?>
@@ -194,6 +196,7 @@
     <?php endif; ?>
 </div>
 
+<?php if (session()->get('role_id') <= 2): ?>
 <!-- Adjust Stock Modal -->
 <div class="modal fade" id="adjustStockModal" tabindex="-1" aria-labelledby="adjustStockModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -251,5 +254,7 @@
         </form>
     </div>
 </div>
+
+<?php endif; ?>
 
 <?= $this->endSection(); ?>

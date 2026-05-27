@@ -104,7 +104,9 @@
         <p class="text-muted">Manage your retail inventory, pricing, and stock.</p>
     </div>
     <div class="page-actions">
+        <?php if (session()->get('role_id') <= 2): ?>
         <a href="<?= base_url('products/create') ?>" class="btn btn-primary">+ Add Product</a>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -188,12 +190,16 @@
                                 <?php endif; ?>
                             </td>
                             <td>
+                                <?php if (session()->get('role_id') <= 2): ?>
                                 <a href="<?= base_url('products/edit/' . $product['id']); ?>" class="btn btn-sm btn-info text-white">Edit</a>
+                                <?php endif; ?>
+                                <?php if (session()->get('role_id') == 1): ?>
                                 <a href="<?= base_url('products/delete/' . $product['id']); ?>"
                                    class="btn btn-sm btn-danger"
                                    onclick="return confirm('Are you sure you want to delete this product?');">
                                    Delete
                                 </a>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>

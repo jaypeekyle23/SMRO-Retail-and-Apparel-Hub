@@ -76,7 +76,9 @@
         <h1 class="h3 mb-0"><strong><?= esc($title) ?></strong></h1>
         <p class="text-muted">Manage your suppliers.</p>
     </div>
+    <?php if (session()->get('role_id') <= 2): ?>
     <a href="<?= base_url('suppliers/create') ?>" class="btn btn-primary">+ Add Supplier</a>
+    <?php endif; ?>
 </div>
 
 <?php if (session()->getFlashdata('success')): ?>
@@ -123,8 +125,12 @@
                         <td style="color:var(--txt-2)"><?= esc($supplier['email'] ?: '—') ?></td>
                         <td style="color:var(--txt-2);font-size:.83rem"><?= esc($supplier['address'] ?: '—') ?></td>
                         <td>
+                            <?php if (session()->get('role_id') <= 2): ?>
                             <a href="<?= base_url('suppliers/edit/' . $supplier['id']) ?>" class="btn btn-sm btn-info text-white">Edit</a>
+                            <?php endif; ?>
+                            <?php if (session()->get('role_id') == 1): ?>
                             <a href="<?= base_url('suppliers/delete/' . $supplier['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                            <?php endif; ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>

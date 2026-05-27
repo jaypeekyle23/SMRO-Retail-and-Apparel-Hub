@@ -126,6 +126,7 @@
                             <td class="date-cell"><?= date('M d, Y', strtotime($return['created_at'])) ?></td>
                             <td>
                                 <?php if ($return['status'] === 'pending'): ?>
+                                    <?php if (session()->get('role_id') <= 2): ?>
                                     <form action="<?= base_url('returns/approve/' . $return['id']) ?>" method="POST" class="d-inline" onsubmit="return confirm('Approve this return and restock?')">
                                         <?= csrf_field() ?>
                                         <button type="submit" class="btn btn-sm btn-success">Approve</button>
@@ -134,6 +135,9 @@
                                         <?= csrf_field() ?>
                                         <button type="submit" class="btn btn-sm btn-danger">Reject</button>
                                     </form>
+                                    <?php else: ?>
+                                    <span style="color:var(--txt-3)">Pending review</span>
+                                    <?php endif; ?>
                                 <?php else: ?>
                                     <span style="color:var(--txt-3)">—</span>
                                 <?php endif; ?>
