@@ -55,6 +55,7 @@ class MainSeeder extends Seeder
             ['id' => 2, 'menu_category' => 'Catalog'],
             ['id' => 3, 'menu_category' => 'Sales'],
             ['id' => 4, 'menu_category' => 'System'],
+            ['id' => 5, 'menu_category' => 'Store'],
         ]);
         echo "✔ Menu categories seeded.\n";
 
@@ -68,9 +69,11 @@ class MainSeeder extends Seeder
         //  6  - Point of Sale   (Sales/3)
         //  7  - Sales History   (Sales/3)
         //  8  - Customers       (Sales/3)
-        //  9  - Returns         (Sales/3)   ← was missing, added here
+        //  9  - Returns         (Sales/3)
         //  10 - Settings        (System/4)
         //  11 - Menu Management (System/4)
+        //  12 - Shop            (Store/5)
+        //  13 - My Orders       (Store/5)
         $this->db->table('user_menu')->truncate();
         $this->db->table('user_menu')->insertBatch([
             ['id' => 1,  'menu_category' => 1, 'menu_category_id' => 1, 'title' => 'Dashboard',       'url' => 'dashboard',       'icon' => 'sliders',       'is_active' => 1],
@@ -84,6 +87,8 @@ class MainSeeder extends Seeder
             ['id' => 9,  'menu_category' => 3, 'menu_category_id' => 3, 'title' => 'Returns',         'url' => 'returns',         'icon' => 'rotate-ccw',    'is_active' => 1],
             ['id' => 10, 'menu_category' => 4, 'menu_category_id' => 4, 'title' => 'Settings',        'url' => 'users',           'icon' => 'settings',      'is_active' => 1],
             ['id' => 11, 'menu_category' => 4, 'menu_category_id' => 4, 'title' => 'Menu Management', 'url' => 'menu-management', 'icon' => 'settings',      'is_active' => 1],
+            ['id' => 12, 'menu_category' => 5, 'menu_category_id' => 5, 'title' => 'Shop',            'url' => 'shop',            'icon' => 'shopping-bag',  'is_active' => 1],
+            ['id' => 13, 'menu_category' => 5, 'menu_category_id' => 5, 'title' => 'My Orders',       'url' => 'my-orders',       'icon' => 'package',       'is_active' => 1],
         ]);
         echo "✔ Menus seeded.\n";
 
@@ -98,30 +103,32 @@ class MainSeeder extends Seeder
         //                 Menus: Dashboard, Products, Stock Ledger,
         //                        POS, Sales History, Customers, Returns
         //                 (No Suppliers, no Purchase Orders)
+        // USER       (4): Store category only
+        //                 Menus: Dashboard, Shop, My Orders
         // ---------------------------------------------------------------
         $this->db->table('user_access')->truncate();
 
         $accessData = [];
 
-        // --- Superadmin: all 4 categories ---
-        foreach ([1, 2, 3, 4] as $catId) {
+        // --- Superadmin: all 5 categories ---
+        foreach ([1, 2, 3, 4, 5] as $catId) {
             $accessData[] = ['role_id' => 1, 'menu_category_id' => $catId, 'menu_id' => 0];
         }
-        // --- Superadmin: all 11 menus ---
-        foreach (range(1, 11) as $menuId) {
+        // --- Superadmin: all 13 menus ---
+        foreach (range(1, 13) as $menuId) {
             $accessData[] = ['role_id' => 1, 'menu_category_id' => 0, 'menu_id' => $menuId];
         }
 
-        // --- Manager: categories Main, Catalog, Sales (no System) ---
+        // --- Manager: categories Main, Catalog, Sales (no System, no Store) ---
         foreach ([1, 2, 3] as $catId) {
             $accessData[] = ['role_id' => 2, 'menu_category_id' => $catId, 'menu_id' => 0];
         }
-        // --- Manager: menus (no Settings/11, no Menu Management/12) ---
+        // --- Manager: menus (no Settings/10, no Menu Management/11, no Store menus) ---
         foreach ([1, 2, 3, 4, 5, 6, 7, 8, 9] as $menuId) {
             $accessData[] = ['role_id' => 2, 'menu_category_id' => 0, 'menu_id' => $menuId];
         }
 
-        // --- Staff: categories Main, Catalog, Sales (no System) ---
+        // --- Staff: categories Main, Catalog, Sales (no System, no Store) ---
         foreach ([1, 2, 3] as $catId) {
             $accessData[] = ['role_id' => 3, 'menu_category_id' => $catId, 'menu_id' => 0];
         }
@@ -129,6 +136,11 @@ class MainSeeder extends Seeder
         foreach ([1, 2, 3, 6, 7, 8, 9] as $menuId) {
             $accessData[] = ['role_id' => 3, 'menu_category_id' => 0, 'menu_id' => $menuId];
         }
+
+        // --- User: Store category only ---
+        $accessData[] = ['role_id' => 4, 'menu_category_id' => 5, 'menu_id' => 0];
+        $accessData[] = ['role_id' => 4, 'menu_category_id' => 0, 'menu_id' => 12];
+        $accessData[] = ['role_id' => 4, 'menu_category_id' => 0, 'menu_id' => 13];
 
         $this->db->table('user_access')->insertBatch($accessData);
         echo "✔ User access seeded.\n";

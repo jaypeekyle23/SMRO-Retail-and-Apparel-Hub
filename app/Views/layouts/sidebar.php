@@ -179,6 +179,8 @@
                 'returns'         => 'rotate-ccw',
                 'users'           => 'settings',
                 'menu-management' => 'settings',
+                'shop'            => 'shopping-bag', 
+                'my-orders'       => 'package',
             ];
 
             // Loop through menu categories the role has access to
