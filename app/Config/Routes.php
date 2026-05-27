@@ -100,3 +100,7 @@ $routes->get('returns/create/(:num)', 'Returns::create/$1');
 $routes->post('returns/store', 'Returns::store');
 $routes->post('returns/approve/(:num)', 'Returns::approve/$1');
 $routes->post('returns/reject/(:num)', 'Returns::reject/$1');
+
+// User Portal Routes
+$routes->get('shop', 'UserPortal::shop');
+$routes->get('my-orders', 'UserPortal::myOrders');
