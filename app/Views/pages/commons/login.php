@@ -515,23 +515,6 @@
 
         </form>
 
-        <!-- Divider + role pills (visual context, no logic) -->
-        <div class="divider">Sign in as</div>
-        <div class="role-pills">
-            <div class="role-pill">
-                <div class="role-pill-dot dot-owner"></div>
-                Owner
-            </div>
-            <div class="role-pill">
-                <div class="role-pill-dot dot-manager"></div>
-                Manager
-            </div>
-            <div class="role-pill">
-                <div class="role-pill-dot dot-cashier"></div>
-                Cashier
-            </div>
-        </div>
-
         <!-- Register link — preserves original base_url('register') -->
         <div class="register-link">
             Don't have an account?&nbsp;
