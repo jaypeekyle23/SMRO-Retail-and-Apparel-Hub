@@ -14,6 +14,7 @@ class MainSeeder extends Seeder
             ['id' => 1, 'role' => 'Superadmin'],
             ['id' => 2, 'role' => 'Manager'],
             ['id' => 3, 'role' => 'Staff'],
+            ['id' => 4, 'role' => 'User'],
         ]);
         echo "✔ Roles seeded.\n";
 

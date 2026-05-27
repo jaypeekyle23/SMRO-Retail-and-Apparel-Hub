@@ -92,7 +92,7 @@ class Auth extends BaseController
                 'inputUsername' => $inputEmail, 
                 'inputEmail'    => $inputEmail, 
                 'inputPassword' => $inputPassword,
-                'inputRole'     => 1            
+                'inputRole'     => 4            
             ];
             
             // FIX: Instantiate the model locally here as well
