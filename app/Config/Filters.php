@@ -73,6 +73,7 @@ class Filters extends BaseFilters
                 'cart/*',
                 'order-confirmed',
                 'order-confirmed/*',
+                'my-orders/return',
             ]],
         ],
         'after' => [

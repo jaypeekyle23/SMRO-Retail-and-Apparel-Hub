@@ -111,3 +111,5 @@ $routes->post('cart/clear',          'UserPortal::clearCart');
 $routes->get('checkout',             'UserPortal::checkout');
 $routes->post('checkout/place-order','UserPortal::placeOrder');
 $routes->get('order-confirmed/(:num)','UserPortal::orderConfirmed/$1');
+$routes->post('my-orders/return', 'UserPortal::submitReturn');
+$routes->post('cart/update', 'UserPortal::updateCart');

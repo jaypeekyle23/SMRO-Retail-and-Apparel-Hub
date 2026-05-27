@@ -12,7 +12,6 @@ class Home extends BaseController
 {
     public function index()
     {
-        $this->cachePage(60); // Cache for 60 seconds
 
         // Redirect User role (4) to their own dashboard
         if (session()->get('role_id') == 4) {
@@ -22,10 +21,14 @@ class Home extends BaseController
 
             $orderModel     = new OrderModel();
             $orderItemModel = new OrderItemModel();
+            $db             = \Config\Database::connect();
 
-            $recentOrders = [];
-            $totalOrders  = 0;
-            $totalSpent   = 0;
+            $recentOrders    = [];
+            $totalOrders     = 0;
+            $totalSpent      = 0;
+            $pendingReturns  = [];
+            $approvedReturns = [];
+            $rejectedReturns = [];
 
             if ($customer) {
                 $recentOrders = $orderModel
@@ -48,13 +51,42 @@ class Home extends BaseController
                     ->selectSum('total_amount')
                     ->where('customer_id', $customer['id'])
                     ->first()['total_amount'] ?? 0;
+
+                // Get all order IDs for this customer
+                $orderIds = array_column(
+                    $orderModel->select('id')->where('customer_id', $customer['id'])->findAll(),
+                    'id'
+                );
+
+                if (!empty($orderIds)) {
+                    $allReturns = $db->table('returns')
+                        ->select('returns.*, orders.order_number')
+                        ->join('orders', 'orders.id = returns.order_id', 'left')
+                        ->whereIn('returns.order_id', $orderIds)
+                        ->orderBy('returns.created_at', 'DESC')
+                        ->get()
+                        ->getResultArray();
+
+                    foreach ($allReturns as $return) {
+                        if ($return['status'] === 'pending') {
+                            $pendingReturns[] = $return;
+                        } elseif ($return['status'] === 'approved') {
+                            $approvedReturns[] = $return;
+                        } elseif ($return['status'] === 'rejected') {
+                            $rejectedReturns[] = $return;
+                        }
+                    }
+                }
             }
 
             $data = array_merge($this->data, [
-                'title'        => 'Dashboard',
-                'recentOrders' => $recentOrders,
-                'totalOrders'  => $totalOrders,
-                'totalSpent'   => $totalSpent,
+                'title'           => 'Dashboard',
+                'recentOrders'    => $recentOrders,
+                'totalOrders'     => $totalOrders,
+                'totalSpent'      => $totalSpent,
+                'pendingReturns'  => $pendingReturns,
+                'approvedReturns' => $approvedReturns,
+                'rejectedReturns' => $rejectedReturns,
             ]);
 
             return view('pages/user_portal/dashboard', $data);

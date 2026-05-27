@@ -89,6 +89,7 @@ class MainSeeder extends Seeder
             ['id' => 11, 'menu_category' => 4, 'menu_category_id' => 4, 'title' => 'Menu Management', 'url' => 'menu-management', 'icon' => 'settings',      'is_active' => 1],
             ['id' => 12, 'menu_category' => 5, 'menu_category_id' => 5, 'title' => 'Shop',            'url' => 'shop',            'icon' => 'shopping-bag',  'is_active' => 1],
             ['id' => 13, 'menu_category' => 5, 'menu_category_id' => 5, 'title' => 'My Orders',       'url' => 'my-orders',       'icon' => 'package',       'is_active' => 1],
+            ['id' => 14, 'menu_category' => 5, 'menu_category_id' => 5, 'title' => 'Cart', 'url' => 'checkout', 'icon' => 'shopping-cart', 'is_active' => 1],
         ]);
         echo "✔ Menus seeded.\n";
 
@@ -141,6 +142,7 @@ class MainSeeder extends Seeder
         $accessData[] = ['role_id' => 4, 'menu_category_id' => 5, 'menu_id' => 0];
         $accessData[] = ['role_id' => 4, 'menu_category_id' => 0, 'menu_id' => 12];
         $accessData[] = ['role_id' => 4, 'menu_category_id' => 0, 'menu_id' => 13];
+        $accessData[] = ['role_id' => 4, 'menu_category_id' => 0, 'menu_id' => 14];
 
         $this->db->table('user_access')->insertBatch($accessData);
         echo "✔ User access seeded.\n";

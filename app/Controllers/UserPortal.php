@@ -113,19 +113,22 @@ class UserPortal extends BaseController
 
     public function checkout()
     {
-        $cart = session()->get('cart') ?? [];
-
-        if (empty($cart)) {
-            return redirect()->to('shop')->with('error', 'Your cart is empty.');
-        }
+        $cart         = session()->get('cart') ?? [];
+        $variantModel = new ProductVariantModel();
 
         $total = 0;
-        foreach ($cart as $item) {
+        foreach ($cart as &$item) {
             $total += $item['price'] * $item['quantity'];
+
+            // Fetch all variants for this product so user can switch
+            $item['all_variants'] = $variantModel
+                ->where('product_id', $item['product_id'])
+                ->where('stock_quantity >', 0)
+                ->findAll();
         }
 
         $data = array_merge($this->data, [
-            'title' => 'Checkout',
+            'title' => 'Cart',
             'cart'  => $cart,
             'total' => $total
         ]);
@@ -249,6 +252,7 @@ class UserPortal extends BaseController
         if ($customer) {
             $orderModel     = new OrderModel();
             $orderItemModel = new OrderItemModel();
+            $db             = \Config\Database::connect();
 
             $orders = $orderModel
                 ->where('customer_id', $customer['id'])
@@ -262,6 +266,13 @@ class UserPortal extends BaseController
                     ->join('product_variants', 'product_variants.id = order_items.variant_id', 'left')
                     ->where('order_id', $order['id'])
                     ->findAll();
+
+                // Fetch any return requests for this order
+                $order['returns'] = $db->table('returns')
+                    ->where('order_id', $order['id'])
+                    ->orderBy('created_at', 'DESC')
+                    ->get()
+                    ->getResultArray();
             }
         }
 
@@ -271,5 +282,130 @@ class UserPortal extends BaseController
         ]);
 
         return view('pages/user_portal/my_orders', $data);
+    }
+
+    public function submitReturn()
+    {
+        $orderId   = $this->request->getPost('order_id');
+        $variantId = $this->request->getPost('variant_id');
+        $quantity  = (int) $this->request->getPost('quantity');
+        $reason    = htmlspecialchars($this->request->getPost('reason', FILTER_UNSAFE_RAW));
+
+        if (!$orderId || !$variantId || $quantity < 1 || empty($reason)) {
+            return redirect()->to('my-orders')->with('error', 'Please fill in all required fields.');
+        }
+
+        // Verify the order belongs to the logged-in user
+        $email         = session()->get('email');
+        $customerModel = new CustomerModel();
+        $customer      = $customerModel->where('email', $email)->first();
+
+        if (!$customer) {
+            return redirect()->to('my-orders')->with('error', 'Customer record not found.');
+        }
+
+        $orderModel = new OrderModel();
+        $order      = $orderModel
+            ->where('id', $orderId)
+            ->where('customer_id', $customer['id'])
+            ->first();
+
+        if (!$order) {
+            return redirect()->to('my-orders')->with('error', 'Order not found.');
+        }
+
+        // Get the specific order item to calculate refund amount and get product_id
+        $orderItemModel = new OrderItemModel();
+        $orderItem      = $orderItemModel
+            ->where('order_id', $orderId)
+            ->where('variant_id', $variantId)
+            ->first();
+
+        if (!$orderItem) {
+            return redirect()->to('my-orders')->with('error', 'Order item not found.');
+        }
+
+        $refundAmount = $orderItem['price'] * $quantity;
+
+        $db = \Config\Database::connect();
+        $db->table('returns')->insert([
+            'order_id'      => $orderId,
+            'variant_id'    => $variantId,
+            'product_id'    => $orderItem['product_id'],
+            'quantity'      => $quantity,
+            'reason'        => $reason,
+            'refund_amount' => $refundAmount,
+            'status'        => 'pending',
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s'),
+        ]);
+
+        return redirect()->to('my-orders')->with('success', 'Your return/refund request has been submitted. Our team will review it shortly.');
+    }
+
+    public function updateCart()
+    {
+        $variantId    = $this->request->getPost('variant_id');
+        $newVariantId = $this->request->getPost('new_variant_id');
+        $quantity     = (int) $this->request->getPost('quantity');
+
+        if (!$variantId || $quantity < 1) {
+            return redirect()->to('checkout')->with('error', 'Invalid update.');
+        }
+
+        $cart         = session()->get('cart') ?? [];
+        $variantModel = new ProductVariantModel();
+
+        // If variant changed, validate new variant and replace
+        if ($newVariantId && $newVariantId != $variantId) {
+            $newVariant = $variantModel
+                ->select('product_variants.*, products.name as product_name, products.selling_price, products.base_image')
+                ->join('products', 'products.id = product_variants.product_id', 'inner')
+                ->where('product_variants.id', $newVariantId)
+                ->first();
+
+            if (!$newVariant) {
+                return redirect()->to('checkout')->with('error', 'Selected variant not found.');
+            }
+
+            if ($newVariant['stock_quantity'] < $quantity) {
+                return redirect()->to('checkout')->with('error', 'Insufficient stock for selected variant.');
+            }
+
+            // Remove old variant from cart
+            unset($cart[$variantId]);
+
+            // Add new variant (merge if already in cart)
+            if (isset($cart[$newVariantId])) {
+                $cart[$newVariantId]['quantity'] += $quantity;
+            } else {
+                $cart[$newVariantId] = [
+                    'variant_id'   => $newVariantId,
+                    'product_id'   => $newVariant['product_id'],
+                    'product_name' => $newVariant['product_name'],
+                    'sku'          => $newVariant['sku'],
+                    'size'         => $newVariant['size'],
+                    'color'        => $newVariant['color'],
+                    'price'        => $newVariant['selling_price'],
+                    'quantity'     => $quantity,
+                    'base_image'   => $newVariant['base_image'],
+                ];
+            }
+        } else {
+            // Just update quantity
+            $variant = $variantModel->find($variantId);
+
+            if (!$variant || $variant['stock_quantity'] < $quantity) {
+                return redirect()->to('checkout')->with('error', 'Insufficient stock.');
+            }
+
+            if (isset($cart[$variantId])) {
+                $cart[$variantId]['quantity'] = $quantity;
+            }
+        }
+
+        session()->set('cart', $cart);
+
+        return redirect()->to('checkout')->with('success', 'Cart updated.');
     }
 }
