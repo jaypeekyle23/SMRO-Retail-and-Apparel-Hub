@@ -153,91 +153,65 @@
         </a>
         <ul class="sidebar-nav">
 
-            <li class="sidebar-header">
-                Main
-            </li>
+            <?php
+            $role = session()->get('role_id');
 
-            <li class="sidebar-item <?= url_is('dashboard*') || url_is('/') ? 'active' : ''; ?>">
+            // Always show Dashboard (accessible to all roles)
+            ?>
+            <li class="sidebar-header">Main</li>
+            <li class="sidebar-item <?= url_is('dashboard*') ? 'active' : ''; ?>">
                 <a class="sidebar-link" href="<?= base_url('dashboard'); ?>">
-                    <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
+                    <i class="align-middle" data-feather="sliders"></i>
+                    <span class="align-middle">Dashboard</span>
                 </a>
             </li>
 
-            <li class="sidebar-header">
-                Catalog
-            </li>
+            <?php
+            // Icon map: menu url => feather icon name
+            $iconMap = [
+                'products'        => 'box',
+                'inventory'       => 'clipboard',
+                'suppliers'       => 'truck',
+                'purchase-orders' => 'shopping-bag',
+                'pos'             => 'shopping-cart',
+                'sales'           => 'file-text',
+                'customers'       => 'users',
+                'returns'         => 'rotate-ccw',
+                'users'           => 'settings',
+                'menu-management' => 'settings',
+            ];
 
-            <li class="sidebar-item <?= url_is('products*') ? 'active' : ''; ?>">
-                <a class="sidebar-link" href="<?= base_url('products'); ?>">
-                    <i class="align-middle" data-feather="box"></i> <span class="align-middle">Products</span>
+            // Loop through menu categories the role has access to
+            if (!empty($MenuCategory)):
+                foreach ($MenuCategory as $category):
+                    // Skip 'Main' — Dashboard is already hardcoded above
+                    if (strtolower($category['menu_category']) === 'main') continue;
+
+                    $menus = getMenu($category['menuCategoryID'], $role);
+                    if (empty($menus)) continue;
+            ?>
+            <li class="sidebar-header"><?= esc($category['menu_category']); ?></li>
+
+            <?php foreach ($menus as $menu): ?>
+            <li class="sidebar-item <?= url_is($menu['url'] . '*') ? 'active' : ''; ?>">
+                <a class="sidebar-link" href="<?= base_url($menu['url']); ?>">
+                    <i class="align-middle" data-feather="<?= esc($iconMap[$menu['url']] ?? 'circle'); ?>"></i>
+                    <span class="align-middle"><?= esc($menu['title']); ?></span>
                 </a>
             </li>
+            <?php endforeach; ?>
 
-            <li class="sidebar-item <?= url_is('inventory*') ? 'active' : ''; ?>">
-                <a class="sidebar-link" href="<?= base_url('inventory'); ?>">
-                    <i class="align-middle" data-feather="clipboard"></i> <span class="align-middle">Stock Ledger</span>
-                </a>
-            </li>
+            <?php
+                endforeach;
+            endif;
+            ?>
 
-            <li class="sidebar-item <?= url_is('suppliers*') ? 'active' : ''; ?>">
-                <a class="sidebar-link" href="<?= base_url('suppliers'); ?>">
-                    <i class="align-middle" data-feather="truck"></i> <span class="align-middle">Suppliers</span>
-                </a>
-            </li>
-
-            <li class="sidebar-item <?= url_is('purchase-orders*') ? 'active' : ''; ?>">
-                <a class="sidebar-link" href="<?= base_url('purchase-orders'); ?>">
-                    <i class="align-middle" data-feather="shopping-bag"></i> <span class="align-middle">Purchase Orders</span>
-                </a>
-            </li>
-
-            <li class="sidebar-header">
-                Sales
-            </li>
-
-            <li class="sidebar-item <?= url_is('pos*') ? 'active' : ''; ?>">
-                <a class="sidebar-link" href="<?= base_url('pos'); ?>">
-                    <i class="align-middle" data-feather="shopping-cart"></i> <span class="align-middle">Point of Sale</span>
-                </a>
-            </li>
-
-            <li class="sidebar-item <?= url_is('sales*') ? 'active' : ''; ?>">
-                <a class="sidebar-link" href="<?= base_url('sales'); ?>">
-                    <i class="align-middle" data-feather="file-text"></i> <span class="align-middle">Sales History</span>
-                </a>
-            </li>
-
-            <li class="sidebar-item <?= url_is('customers*') ? 'active' : ''; ?>">
-                <a class="sidebar-link" href="<?= base_url('customers'); ?>">
-                    <i class="align-middle" data-feather="users"></i> <span class="align-middle">Customers</span>
-                </a>
-            </li>
-
-            <li class="sidebar-item <?= url_is('returns*') ? 'active' : ''; ?>">
-                <a class="sidebar-link" href="<?= base_url('returns'); ?>">
-                    <i class="align-middle" data-feather="rotate-ccw"></i> <span class="align-middle">Returns</span>
-                </a>
-            </li>
-
-            <li class="sidebar-header">
-                System
-            </li>
-
-            <li class="sidebar-item <?= url_is('users*') ? 'active' : ''; ?>">
-                <a class="sidebar-link" href="<?= base_url('users'); ?>">
-                    <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Settings</span>
-                </a>
-            </li>
-
-            <li class="sidebar-item <?= url_is('menu-management*') ? 'active' : ''; ?>">
-                <a class="sidebar-link" href="<?= base_url('menu-management'); ?>">
-                    <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Menu Management</span>
-                </a>
-            </li>
-
+            <?php // My Profile is always visible to every logged-in user ?>
+            <li class="sidebar-header">Account</li>
             <li class="sidebar-item <?= url_is('profile*') ? 'active' : ''; ?>">
                 <a class="sidebar-link" href="<?= base_url('profile'); ?>">
-                    <i class="align-middle" data-feather="user"></i> <span class="align-middle">My Profile</span>
+                    <i class="align-middle" data-feather="user"></i>
+                    <span class="align-middle">My Profile</span>
                 </a>
             </li>
 
