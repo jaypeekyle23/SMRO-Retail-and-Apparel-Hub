@@ -104,3 +104,10 @@ $routes->post('returns/reject/(:num)', 'Returns::reject/$1');
 // User Portal Routes
 $routes->get('shop', 'UserPortal::shop');
 $routes->get('my-orders', 'UserPortal::myOrders');
+// Cart & Checkout Routes
+$routes->post('shop/add-to-cart',    'UserPortal::addToCart');
+$routes->post('cart/remove',         'UserPortal::removeFromCart');
+$routes->post('cart/clear',          'UserPortal::clearCart');
+$routes->get('checkout',             'UserPortal::checkout');
+$routes->post('checkout/place-order','UserPortal::placeOrder');
+$routes->get('order-confirmed/(:num)','UserPortal::orderConfirmed/$1');

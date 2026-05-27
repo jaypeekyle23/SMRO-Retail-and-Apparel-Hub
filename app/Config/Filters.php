@@ -67,6 +67,12 @@ class Filters extends BaseFilters
                 'profile',
                 'profile/*',
                 'api/*',
+                'checkout',
+                'checkout/*',
+                'cart',
+                'cart/*',
+                'order-confirmed',
+                'order-confirmed/*',
             ]],
         ],
         'after' => [

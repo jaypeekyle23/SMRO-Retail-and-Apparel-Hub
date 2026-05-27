@@ -465,7 +465,7 @@
             </div>
         </div>
 
-        <div class="form-heading">Welcome back</div>
+        <div class="form-heading">Welcome back!</div>
         <div class="form-sub">Sign in to your account to continue</div>
 
         <!-- ── CI4 alerts component — completely untouched ── -->
