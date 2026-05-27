@@ -14,6 +14,52 @@ class Home extends BaseController
     {
         $this->cachePage(60); // Cache for 60 seconds
 
+        // Redirect User role (4) to their own dashboard
+        if (session()->get('role_id') == 4) {
+            $email         = session()->get('email');
+            $customerModel = new \App\Models\CustomerModel();
+            $customer      = $customerModel->where('email', $email)->first();
+
+            $orderModel     = new OrderModel();
+            $orderItemModel = new OrderItemModel();
+
+            $recentOrders = [];
+            $totalOrders  = 0;
+            $totalSpent   = 0;
+
+            if ($customer) {
+                $recentOrders = $orderModel
+                    ->where('customer_id', $customer['id'])
+                    ->orderBy('created_at', 'DESC')
+                    ->limit(5)
+                    ->findAll();
+
+                foreach ($recentOrders as &$order) {
+                    $order['items'] = $orderItemModel
+                        ->where('order_id', $order['id'])
+                        ->findAll();
+                }
+
+                $totalOrders = $orderModel
+                    ->where('customer_id', $customer['id'])
+                    ->countAllResults();
+
+                $totalSpent = $orderModel
+                    ->selectSum('total_amount')
+                    ->where('customer_id', $customer['id'])
+                    ->first()['total_amount'] ?? 0;
+            }
+
+            $data = array_merge($this->data, [
+                'title'        => 'Dashboard',
+                'recentOrders' => $recentOrders,
+                'totalOrders'  => $totalOrders,
+                'totalSpent'   => $totalSpent,
+            ]);
+
+            return view('pages/user_portal/dashboard', $data);
+        }
+
         $productModel   = new ProductModel();
         $variantModel   = new ProductVariantModel();
         $logModel       = new StockLogModel();
