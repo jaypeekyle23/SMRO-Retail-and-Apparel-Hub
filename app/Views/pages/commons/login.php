@@ -475,6 +475,7 @@
 
         <!-- ── FORM — action, method, and ALL name attrs preserved exactly ── -->
         <form action="<?= base_url('login'); ?>" method="POST">
+            <?= csrf_field() ?>
 
             <!-- Email -->
             <div class="field-group">

@@ -46,6 +46,7 @@ class Filters extends BaseFilters
 
     public array $globals = [
         'before' => [
+            'csrf' => ['except' => ['api/*']],
             // Not logged in? Redirect to login — except for public routes and API
             'isLoggedIn' => ['except' => [
                 '/',
