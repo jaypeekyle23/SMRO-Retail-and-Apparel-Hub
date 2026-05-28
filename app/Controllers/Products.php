@@ -11,9 +11,11 @@ class Products extends BaseController
     public function index()
     {
         $productModel = new ProductModel();
+        $cache        = \Config\Services::cache();
 
         $search  = $this->request->getGet('search') ?? '';
         $perPage = 10;
+        $page    = (int)($this->request->getGet('page') ?? 1);
 
         if ($search) {
             $products = $productModel
@@ -22,7 +24,13 @@ class Products extends BaseController
                 ->orLike('category', $search)
                 ->paginate($perPage, 'default');
         } else {
-            $products = $productModel->paginate($perPage, 'default');
+            $cacheKey = 'products_page_' . $page;
+            $products = $cache->get($cacheKey);
+
+            if ($products === null) {
+                $products = $productModel->paginate($perPage, 'default');
+                $cache->save($cacheKey, $products, 300); // cache for 5 minutes
+            }
         }
 
         $data = array_merge($this->data, [
@@ -120,7 +128,7 @@ class Products extends BaseController
                 }
             }
         }
-
+        \Config\Services::cache()->clean();
         return redirect()->to('products')->with('success', 'Product added successfully!');
     }
 
@@ -138,6 +146,7 @@ class Products extends BaseController
 
         $productModel->delete($id);
 
+        \Config\Services::cache()->clean();
         return redirect()->to('products')->with('success', 'Product and its image deleted successfully!');
     }
 
@@ -285,7 +294,7 @@ class Products extends BaseController
                 }
             }
         }
-
+        \Config\Services::cache()->clean();
         return redirect()->to('products')->with('success', 'Product updated successfully!');
     }
 }
