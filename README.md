@@ -1,8 +1,6 @@
-# Thread - Retail & Apparel Hub
+# Thread — Retail & Apparel Hub
 
-Thread is a full-featured Retail & Apparel Hub management system built with CodeIgniter 4. It serves as a central hub for inventory control, sales management, and supplier coordination, with a secure RESTful API for external integrations.
-
-> **Academic Project** - Final Project for 3rd Year IT (SMRO: Secure Multi-Tenant Resource Orchestrator), Scenario Option C: Retail & Apparel Hub.
+Thread is a full-featured Retail & Apparel Hub management system built with CodeIgniter 4. It serves as a central hub for inventory control, sales management, supplier coordination, and self-service customer shopping — with a secure RESTful API for external integrations.
 
 ---
 
@@ -16,31 +14,55 @@ Thread is a full-featured Retail & Apparel Hub management system built with Code
 
 ---
 
+## Roles
+
+Thread supports four access levels, each with a tailored interface:
+
+| Role       | Description                                                                 |
+|------------|-----------------------------------------------------------------------------|
+| Superadmin | Full access to all modules including system settings and menu management     |
+| Manager    | Access to catalog, sales, customers, suppliers, and purchase orders          |
+| Staff      | Access to products, inventory, POS, sales history, customers, and returns    |
+| User       | Self-service customer portal: shop, cart, checkout, orders, and returns      |
+
+---
+
 ## Features
 
-### Core Modules
-- **Authentication** — Login, logout, registration with password hashing
-- **Authorization** — Role-Based Access Control (Superadmin, Manager, Staff)
-- **Dashboard** — Live stats, low stock alerts, recent activity, daily revenue chart, top products chart
-- **Products** — Full CRUD with multi-variant support (size/color), image upload, stock tracking
+### Staff & Admin Modules
+- **Authentication** — Login, logout, registration with password hashing. Self-registered accounts are automatically assigned the User role.
+- **Authorization** — Role-Based Access Control (RBAC) with dynamic menu-level permission management
+- **Dashboard** — Live stats, low stock alerts, recent activity feed, daily revenue chart, top-selling products chart
+- **Products** — Full CRUD with multi-variant support (size/color), image upload, and stock tracking
 - **Inventory / Stock Ledger** — Stock movement logs (IN/OUT), manual adjustments, search, pagination, CSV export
-- **Point of Sale (POS)** — Cart system, customer info capture, checkout, automatic stock deduction
-- **Sales History** — Order listing with date filter, search, pagination, CSV export, printable receipt
-- **Customers** — Auto-created on POS checkout, order history, total spent
-- **Suppliers** — Supplier management (CRUD)
-- **Purchase Orders** — Create POs from suppliers, receive stock automatically updates inventory
-- **Menu Management** — Dynamic menu system with role-based access per menu item
-- **User Management** — Create, update, delete users and roles
+- **Point of Sale (POS)** — Staff-facing cart system, customer capture, checkout, automatic stock deduction
+- **Sales History** — Order listing with date filter, search, pagination, CSV export, and printable receipts
+- **Customers** — Auto-created on POS checkout or self-registration, order history, total spent
+- **Suppliers** — Full supplier management (CRUD)
+- **Purchase Orders** — Create POs from suppliers; receiving a PO automatically updates inventory
+- **Returns & Refunds** — Log return requests, approve or reject them with status tracking
+- **Menu Management** — Dynamic menu system with per-role access control per menu item
+- **User Management** — Create, update, and delete users and role assignments
 - **Settings** — Role access management
+
+### User (Customer) Portal
+- **Shop** — Browse all active products with images, sizes, colors, stock availability, and search
+- **Cart** — Add items to cart with variant selection, update quantities, switch variants, and remove items
+- **Checkout** — Review cart, adjust items, and place orders with a single click
+- **Order Confirmed** — Printable receipt page after every successful order (PDF-saveable)
+- **My Orders** — Full order history with itemized receipts and return/refund request per order
+- **Return & Refund Requests** — Submit return requests per order item with quantity and reason; receive approval or rejection notifications on both the dashboard and orders page
+- **User Dashboard** — Personalized dashboard showing total orders, total spent, approved return count, pending/approved/rejected return updates, and recent order history
 
 ### Technical Highlights
 - RESTful API with Bearer Token authentication (`/api/products`, `/api/inventory`, `/api/sales`)
-- CSRF protection and XSS filtering (using `esc()`)
-- Pagination on Products, Inventory, Sales, Customers, Suppliers, Purchase Orders
+- CSRF protection and XSS filtering via `esc()` throughout
+- Pagination on Products, Inventory, Sales, Customers, Suppliers, and Purchase Orders
 - CSV Export for Sales and Inventory reports
-- CI4 Query Builder used throughout (no raw SQL)
-- Database Migrations and Seeders
-- 10 PHPUnit unit tests
+- Response caching on all API endpoints (`cachePage`)
+- CI4 Query Builder used throughout — no raw SQL
+- Database Migrations and Seeders for reproducible environments
+- 10 PHPUnit unit tests covering core model logic and business rules
 
 ---
 
@@ -56,7 +78,7 @@ composer install
 
 ## Setup
 
-1. Copy `.env` file and configure your database:
+1. Copy the `.env` file and configure your database:
 ```bash
 cp env .env
 ```
@@ -92,26 +114,27 @@ php spark serve
 
 ## Default Login Credentials
 
-| Role       | Email                  | Password     |
-|------------|------------------------|--------------|
-| Superadmin | admin@thread.com       | admin123     |
-| Manager    | manager@thread.com     | manager123   |
-| Staff      | staff@thread.com       | staff123     |
+| Role       | Email               | Password   |
+|------------|---------------------|------------|
+| Superadmin | admin@thread.com    | admin123   |
+| Manager    | manager@thread.com  | manager123 |
+| Staff      | staff@thread.com    | staff123   |
+| User       | Register via `/register` | — |
 
 ---
 
 ## API Usage
 
-The API requires a Bearer Token in the `Authorization` header.
+The API requires a Bearer Token in the `Authorization` header. The default token is seeded automatically and can be found in the `api_tokens` table.
 
 ### Endpoints
 
-| Method | Endpoint          | Description              |
-|--------|-------------------|--------------------------|
-| GET    | /api/products     | Get all products          |
-| GET    | /api/products/{id}| Get a specific product    |
-| GET    | /api/inventory    | Get stock movement logs   |
-| GET    | /api/sales        | Get sales orders          |
+| Method | Endpoint            | Description                  |
+|--------|---------------------|------------------------------|
+| GET    | /api/products       | Get all active products       |
+| GET    | /api/products/{id}  | Get a specific product        |
+| GET    | /api/inventory      | Get stock movement logs       |
+| GET    | /api/sales          | Get sales orders              |
 
 ### Example Request
 
@@ -134,6 +157,7 @@ vendor/bin/phpunit tests/unit/ThreadTest.php
 
 - PHP 8.2 or higher
 - MySQL 5.7 or higher
+- Composer
 - Extensions: `curl`, `fileinfo`, `gd`, `intl`, `mbstring`, `mysqlnd`, `openssl`, `json`, `xml`
 
 ---
