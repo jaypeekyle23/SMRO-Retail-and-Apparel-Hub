@@ -28,11 +28,15 @@ class Auth extends BaseController
                 $password        = $user['password'];
                 $verify = password_verify($inputPassword, $password);
                 if ($verify) {
+                    $db       = \Config\Database::connect();
+                    $roleData = $db->table('user_role')->where('id', $user['role_id'])->get()->getRowArray();
+
                     session()->set([
                         'username'       => $user['username'],
                         'email'          => $user['email'] ?? $user['username'],
                         'role'           => $user['role_id'],
-                        'role_id'        => $user['role_id'], 
+                        'role_id'        => $user['role_id'],
+                        'role_name'      => $roleData['role'] ?? 'User',
                         'isLoggedIn'     => TRUE
                     ]);
                     return redirect()->to(base_url('dashboard'));

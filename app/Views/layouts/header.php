@@ -367,8 +367,7 @@
                 <div class="th-user-text">
                     <!-- Preserves original $user['fullname'] -->
                     <span class="th-user-name text-dark"><?= $user['fullname']; ?></span>
-                    <span class="th-user-role">Staff</span>
-                </div>
+                    <span class="th-user-role"><?= esc(session()->get('role_name')) ?></span>                </div>
 
                 <span class="th-chevron">
                     <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
