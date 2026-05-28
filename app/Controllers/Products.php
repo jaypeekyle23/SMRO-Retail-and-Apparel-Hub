@@ -64,6 +64,11 @@ class Products extends BaseController
         if ($file && $file->isValid() && !$file->hasMoved()) {
             $imageName = $file->getRandomName();
             $file->move('uploads/products', $imageName);
+
+            \Config\Services::image()
+                ->withFile(FCPATH . 'uploads/products/' . $imageName)
+                ->resize(800, 800, true, 'auto')
+                ->save(FCPATH . 'uploads/products/' . $imageName);
         }
 
         $variants    = $this->request->getPost('variants');
@@ -200,6 +205,12 @@ class Products extends BaseController
         if ($file && $file->isValid() && !$file->hasMoved()) {
             $imageName = $file->getRandomName();
             $file->move('uploads/products', $imageName);
+
+            \Config\Services::image()
+                ->withFile(FCPATH . 'uploads/products/' . $imageName)
+                ->resize(800, 800, true, 'auto')
+                ->save(FCPATH . 'uploads/products/' . $imageName);
+
             $updateData['base_image'] = $imageName;
 
             if (!empty($oldProduct['base_image'])) {
