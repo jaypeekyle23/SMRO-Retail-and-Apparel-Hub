@@ -408,6 +408,7 @@
 
         <!-- ── FORM — action, method, and ALL name/required attributes preserved exactly ── -->
         <form action="<?= base_url('register'); ?>" method="POST">
+            <?= csrf_field() ?>
 
             <!-- Full Name -->
             <div class="field-group">

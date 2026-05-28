@@ -21,6 +21,22 @@
 
 </head>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var tokenName = '<?= csrf_token() ?>';
+        var tokenHash = '<?= csrf_hash() ?>';
+        document.querySelectorAll('form').forEach(function (form) {
+            if (form.method.toLowerCase() === 'post' && !form.querySelector('input[name="' + tokenName + '"]')) {
+                var input = document.createElement('input');
+                input.type  = 'hidden';
+                input.name  = tokenName;
+                input.value = tokenHash;
+                form.prepend(input);
+            }
+        });
+    });
+</script>
+
 <body data-theme="light">
 	<div class="wrapper">
 		<?= $this->include('layouts/sidebar'); ?>
