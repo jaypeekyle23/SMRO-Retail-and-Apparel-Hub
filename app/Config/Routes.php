@@ -31,7 +31,10 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api', 'filter' => 'bearer
 $routes->group('', ['filter' => 'isLoggedIn'], static function ($routes) {
 
     // Dashboard
-    $routes->get('dashboard', 'Home::index');
+    $routes->get('dashboard', 'Customer::index');
+
+    // Resource Route — auto-generates GET /products -> Products::index()
+    $routes->resource('products', ['controller' => 'Products', 'only' => ['index']]);
 
     // --- Settings ---
     $routes->group('users', static function ($routes) {
@@ -55,8 +58,7 @@ $routes->group('', ['filter' => 'isLoggedIn'], static function ($routes) {
         $routes->post('create-submenu', 'Settings::createSubMenu');
     });
 
-    // --- Products ---
-    $routes->get('products', 'Products::index');
+    // --- Products (custom routes for non-RESTful actions) ---
     $routes->get('products/create', 'Products::create');
     $routes->post('products/store', 'Products::store');
     $routes->get('products/delete/(:num)', 'Products::delete/$1');

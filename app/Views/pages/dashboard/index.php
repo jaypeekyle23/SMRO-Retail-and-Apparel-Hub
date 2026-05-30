@@ -1,4 +1,4 @@
-<?= $this->extend('layouts/main'); ?>
+<?= $this->extend('layouts/mains'); ?>
 <?= $this->section('content'); ?>
 
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">

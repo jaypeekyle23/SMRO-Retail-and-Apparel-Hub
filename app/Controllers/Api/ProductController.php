@@ -28,7 +28,7 @@ class ProductController extends ResourceController
         }
 
         foreach ($products as &$product) {
-            $product['variants'] = $variantModel
+            $product['variant'] = $variantModel
                 ->where('product_id', $product['id'])
                 ->findAll();
         }

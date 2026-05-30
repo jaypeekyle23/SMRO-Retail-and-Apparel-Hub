@@ -40,7 +40,7 @@ class Products extends BaseController
             'search'   => $search
         ]);
 
-        return view('pages/products/index', $data);
+        return view('pages/products/index', $datas);
     }
 
     public function create()
